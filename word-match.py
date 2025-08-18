@@ -1,7 +1,7 @@
 import csv
 from random import randrange
 
-class Cards:
+class Cards: # creates and generates random list of cards from csv file
     def __init__(self, source):
         self.source_list = source
         self.vocab_list = []
