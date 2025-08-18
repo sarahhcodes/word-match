@@ -1,28 +1,45 @@
 import csv
 from random import randrange
 
-source_list = "vocab.csv" # csv file containing words to import
-vocabulary = []
-match_list = []
-matches_index = []
+class Cards:
+    def __init__(self, source):
+        self.source_list = source
+        self.vocab_list = []
+        self.match_list = []
+        self.number_of_cards = 8
 
-with open(source_list) as file:
-    reader = csv.reader(file)
+        self.convert_list() # generates list of cards for matching
     
-    for row in reader:
-        vocabulary.append({"Japanese": row[0], "English": row[1]})
+    def convert_list(self):
+        matches_index = []
 
-for _ in range(8):
-    n = randrange(len(vocabulary))
-
-    # ensuring no repetition in match_list
-    # if n is in matches_index, keep trying to find another random number
+        # opens source file
+        with open(self.source_list) as file:
+            reader = csv.reader(file)
     
-    while n in matches_index:
-        n = randrange(len(vocabulary))
+            for row in reader:
+                self.vocab_list.append({"Japanese": row[0], "English": row[1]})
+        
+        # randomly generates list
+        for _ in range(self.number_of_cards):
+            n = randrange(len(self.vocab_list))
+
+            # ensuring no repetition in match_list
+            # if n is in matches_index, keep trying to find another random number
     
-    matches_index.append(n)
+            while n in matches_index:
+                n = randrange(len(self.vocab_list))
+    
+            matches_index.append(n)
 
-    match_list.append(vocabulary[n])
+            self.match_list.append(self.vocab_list[n])
 
-print(match_list)
+
+def main():
+    cards = Cards("vocab.csv")
+
+    print(cards.match_list)
+
+
+if __name__ == "__main__":
+    main()
