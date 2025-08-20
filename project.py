@@ -24,12 +24,12 @@ from random import randrange
 # 4) end game -> show score
 
 class Cards: # creates and generates random list of cards from csv file
-    def __init__(self, source):
+    def __init__(self, source, number_of_cards):
         self.source_list = source
         self.vocab_list = []
         self.match_list = []
         self.matches_index = []
-        self.number_of_cards = 8
+        self.number_of_cards = number_of_cards
 
         self.convert_list() # converts csv to list
         self.random_list() # generates subsection of list for matching
@@ -92,9 +92,9 @@ def main():
 
     pygame.quit()
 
-    cards = Cards("vocab.csv")
+    cards = Cards("vocab.csv", 8)
 
-    print(cards.match_list)
+    print(cards.vocab_list)
 
 
 if __name__ == "__main__":
