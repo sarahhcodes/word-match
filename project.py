@@ -62,29 +62,57 @@ class Cards: # creates and generates random list of cards from csv file
         self.matches_index = [] # reset list
 
 class Card: # class to create each card -> make as sprite
-    def __init__(self, japanese, english):
+    def __init__(self, japanese, english, x, y, screen):
         self.japanese = japanese
         self.english = english
+        self.x = x
+        self.y = y
+        self.screen = screen
         self.solved = False # has the player matched the card?
-        self.image_front = "card_front.png"
-        self.image_back = "card_back.png"
+        #self.image_front = "card_front.png" NEED GRAPHICS
+        #self.image_back = "card_back.png" NEED GRAPHICS
+    
+    def draw(self):
+        pygame.draw.rect(self.screen, (255, 255, 255), (self.x, self.y, 150, 200))
+
 
 def main():
     ########## TEMP GAME LOOP
     pygame.init()
-    screen = pygame.display.set_mode((1280,720))
+    screen_width = 1280
+    screen_height = 720
+    screen = pygame.display.set_mode((screen_width,screen_height))
     clock = pygame.time.Clock()
+    number_of_cards = 10
     running = True
+
+    # create group for card sprites
+    cards = Cards("vocab.csv", number_of_cards)
+    card_sprites = []
+    x = 200
+    y = 100
+
+    for word in cards.match_list:
+        card_sprites.append(Card(word['Japanese'], word['English'], x, y, screen))
+
+        if x < screen_width-500:
+            x += 175
+        else:
+            x = 200 # reset x
+            y += 250
+
 
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
         
-        screen.fill((255,233,0))
+        screen.fill((200,150,100))
         
         # game goes here
-        pygame.draw.rect(screen, (255, 255, 255), (250, 250, 500, 100))
+        #TEMP CARD
+        for card in card_sprites:
+            card.draw()
 
         pygame.display.flip()
 
@@ -92,9 +120,10 @@ def main():
 
     pygame.quit()
 
-    cards = Cards("vocab.csv", 8)
 
-    print(cards.vocab_list)
+    #cards = Cards("vocab.csv", 8)
+
+    #print(cards.vocab_list)
 
 
 if __name__ == "__main__":
